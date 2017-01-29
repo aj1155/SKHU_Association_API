@@ -1,0 +1,48 @@
+buildscript {
+	ext {
+		springBootVersion = '1.4.4.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'war'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'idea'
+
+jar {
+	baseName = 'api-server'
+	version = '0.0.1-SNAPSHOT'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile("joda-time:joda-time")
+	compile('org.springframework.boot:spring-boot-starter-jdbc')
+	compile("org.jadira.usertype:usertype.jodatime:2.0.1")
+	compile('org.springframework.boot:spring-boot-starter-security')
+	compile 'io.jsonwebtoken:jjwt:0.6.0'
+	compile("com.google.guava:guava:20.0")
+	compile("org.projectlombok:lombok:1.16.2")
+	compile("com.google.code.gson:gson:2.8.0")
+	compile("org.apache.httpcomponents:httpclient:4.5.2")
+	compile "org.igniterealtime.smack:smack-core:4.0.4"
+	compile "org.igniterealtime.smack:smack-tcp:4.0.4"
+	compile "com.googlecode.json-simple:json-simple:1.1"
+	runtime('com.h2database:h2:1.4.186')
+	runtime('mysql:mysql-connector-java:5.1.35')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
