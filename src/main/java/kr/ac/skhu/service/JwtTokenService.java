@@ -31,16 +31,17 @@ public class JwtTokenService {
     private String secret;
 
     public Map<String,Object> createJWT(UserRequest userRequest){
-        String token = generateToken(generateClaims(userRequest));
         Map<String,Object> response = new HashMap<String,Object>();
-        response.put("token",token);
-        if(token!=null && !token.isEmpty()){
-            response.put("status",200);
-            response.put("msg","Ok");
-        }else{
+        Map<String,Object> claims = generateClaims(userRequest);
+        if(claims==null){
             response.put("msg","인증 실패");
             response.put("status",1000);
+            return response;
         }
+        String token = generateToken(claims);
+        response.put("token",token);
+        response.put("status",200);
+        response.put("msg","Ok");
         return response;
     }
 

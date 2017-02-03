@@ -22,7 +22,7 @@ public class AuthController {
     private JwtTokenService jwtTokenService;
 
     //Todo resoponse 관련 객체 생성 및 Mapping Json util 생성 할 것
-    //Todo password 인증 로직 생성
+    //Todo password 인증 로직 생성,Category_id 까지 넘기고 query_dsl
     @RequestMapping(value = "",method = RequestMethod.POST)
     public Map<String,Object> authenticate(@Valid @RequestBody UserRequest userRequest){
         return jwtTokenService.createJWT(userRequest);
