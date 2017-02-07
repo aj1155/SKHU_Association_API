@@ -35,8 +35,12 @@ public class CommentService {
         return new AsctApiResponse<>(convertUserEntityToResponse(comments));
     }
     public AsctApiResponse<CommentResponse> readOne(int commentId){
-        Comment comment = this.commentRepository.findOne(commentId);
-        return new AsctApiResponse<>(CommentResponse.of(comment));
+        Optional<Comment> commentOptional = Optional.ofNullable(this.commentRepository.findOne(commentId));
+        if(commentOptional.isPresent()){
+            return new AsctApiResponse<>(CommentResponse.of(commentOptional.get()));
+        }
+        return new AsctApiResponse(AsctApiResponse.NOT_FOUND);
+
     }
     /***** update *****/
     public AsctApiResponse update(CommentRequest commentRequest){
