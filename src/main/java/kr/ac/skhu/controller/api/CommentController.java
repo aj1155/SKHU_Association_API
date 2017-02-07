@@ -31,7 +31,7 @@ public class CommentController {
     /***** read *****/
 
     /* readAll */
-    @RequestMapping(value = "/{boardPostId}",method = RequestMethod.GET)
+    @RequestMapping(value = "/boardPost/{boardPostId}",method = RequestMethod.GET)
     public AsctApiResponse<List<CommentResponse>> readAllByBoardPost(@PathVariable String boardPostId){
         return this.commentService.read(Integer.parseInt(boardPostId));
     }
@@ -53,5 +53,5 @@ public class CommentController {
     public AsctApiResponse delete(@PathVariable String commentId){
         return this.commentService.delete(Integer.parseInt(commentId));
     }
-    
+
 }

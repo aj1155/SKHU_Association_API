@@ -101,7 +101,7 @@ public class JwtTokenService {
 
     private User loginPassingDo(UserRequest userRequest){
         //TODO QueryDsl로 변경
-        User user = this.userRepository.findByLoginIdAndPassworAndCategoryId(userRequest.getLogin_id(),userRequest.getPassword(),Integer.parseInt(userRequest.getCategoryId()));
+        User user = this.userRepository.findByLoginIdAndPasswordAndCategoryId(userRequest.getLogin_id(),userRequest.getPassword(),Integer.parseInt(userRequest.getCategoryId()));
         return (user==null)? null:user;
     }
 }
