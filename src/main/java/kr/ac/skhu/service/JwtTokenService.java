@@ -30,8 +30,8 @@ public class JwtTokenService {
     @Value("${jwt.secret}")
     private String secret;
 
-    public Map<String,Object> createJWT(UserRequest userRequest){
-        Map<String,Object> response = new HashMap<String,Object>();
+    public Map<Object,Object> createJWT(UserRequest userRequest){
+        Map<Object,Object> response = new HashMap<>();
         Map<String,Object> claims = generateClaims(userRequest);
         if(claims==null){
             response.put("msg","인증 실패");
@@ -41,6 +41,7 @@ public class JwtTokenService {
         String token = generateToken(claims);
         response.put("token",token);
         response.put("status",200);
+        response.put("user",claims);
         response.put("msg","Ok");
         return response;
     }
@@ -99,7 +100,8 @@ public class JwtTokenService {
     }
 
     private User loginPassingDo(UserRequest userRequest){
-        User user = this.userRepository.findByLoginIdAndPassword(userRequest.getLogin_id(),userRequest.getPassword());
+        //TODO QueryDsl로 변경
+        User user = this.userRepository.findByLoginIdAndPassworAndCategoryId(userRequest.getLogin_id(),userRequest.getPassword(),Integer.parseInt(userRequest.getCategoryId()));
         return (user==null)? null:user;
     }
 }

@@ -5,18 +5,22 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by Manki Kim on 2017-01-18.
+ * Created by Manki Kim on 2017-02-07.
  */
 @Data
-public class UserRequest {
+public class CommentRequest {
 
     private int id;
+
     @NotNull
-    private String login_id;
+    private String content;
+
     @NotNull
-    private String password;
+    private int writer_id;
+
     @NotNull
-    private String user_name;
+    private String writer_name;
+
     @NotNull
-    private String categoryId;
+    private int boadPostId;
 }

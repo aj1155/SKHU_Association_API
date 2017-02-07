@@ -2,9 +2,7 @@ package kr.ac.skhu.service;
 
 import kr.ac.skhu.controller.model.request.BoardPostRequest;
 import kr.ac.skhu.controller.model.response.BoardPostResponse;
-import kr.ac.skhu.domain.Board;
 import kr.ac.skhu.domain.BoardPost;
-import kr.ac.skhu.domain.BoardType;
 import kr.ac.skhu.repository.BoardPostRepository;
 import kr.ac.skhu.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +34,9 @@ public class BoardPostService {
     }
 
     /***** read *****/
-
-    public List<BoardPostResponse> read(int categoryId, BoardType boardType){
-        Board board = this.boardRepository.findByCategoryIdAndBoardType(categoryId,boardType);
-        List<BoardPost> boardPostList = boardPostRepository.findByOwnBoardId(board.getId());
-        return convertBoardPostEntityToResponse(boardPostList);
+    public BoardPostResponse readById(int boardPostId){
+        BoardPost boardPost = this.boardPostRepository.findById(boardPostId);
+        return BoardPostResponse.ofBoard(boardPost);
     }
 
     /***** update *****/

@@ -37,11 +37,11 @@ public class JwtInterceptor implements HandlerInterceptor {
         String token = (String)request.getHeader("token");
         if(token == null || token.isEmpty()){
             log.debug("no Authentication");
-            response.sendRedirect("/error/tokenless");
+            response.sendRedirect(request.getContextPath()+"/error/tokenless");
         }else{
             if(this.jwtTokenService.getUsernameFromToken(token)==null){
                 log.debug("no Authentication");
-                response.sendRedirect("/error/tokenless");
+                response.sendRedirect(request.getContextPath()+"/error/tokenless");
             }
         }
         return true;

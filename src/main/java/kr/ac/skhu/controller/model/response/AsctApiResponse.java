@@ -24,6 +24,7 @@ public class AsctApiResponse<T> {
     private Integer code;
     private T result;
     private String statusDate;
+    private String errorMsg;
 
     public AsctApiResponse() {
         this.code = OK;
@@ -46,6 +47,7 @@ public class AsctApiResponse<T> {
         this.result = result;
         this.statusDate = new SimpleDateFormat(TIME_FORMAT).format(new Date());
     }
+
 
     public Integer getCode() {
         return code;
