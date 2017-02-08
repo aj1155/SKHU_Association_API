@@ -4,6 +4,8 @@ import kr.ac.skhu.controller.model.request.UserRequest;
 import kr.ac.skhu.controller.model.response.AsctApiResponse;
 import kr.ac.skhu.controller.model.response.UserResponse;
 import kr.ac.skhu.domain.User;
+import kr.ac.skhu.domain.UserDIS;
+import kr.ac.skhu.repository.UserDISRepository;
 import kr.ac.skhu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,12 +25,18 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserDISRepository userDISRepository;
+
     /***** create *****/
 
 
     public UserResponse createUser(UserRequest userRequest){
         User user = User.ofCreate(userRequest.getLogin_id(),userRequest.getUser_name(),userRequest.getPassword());
+        user.setPhoneNumber(doReqularProcessingPhoneNum(user.getPhoneNumber()));
         this.userRepository.save(user);
+        UserDIS userDIS = UserDIS.ofCreate(user.getId());
+        this.userDISRepository.save(userDIS);
         return UserResponse.ofUser(user);
     }
 
@@ -72,6 +80,7 @@ public class UserService {
         if(msg != null){
             return new AsctApiResponse<>(AsctApiResponse.DUPLICATE_LOGINID);
         }else{
+            user.setPhoneNumber(doReqularProcessingPhoneNum(user.getPhoneNumber()));
             this.userRepository.save(user);
             return new AsctApiResponse<>(UserResponse.ofUser(user));
         }
@@ -94,6 +103,13 @@ public class UserService {
             return "기존에 사용 중인 휴대번호 입니다.";
 
         return null;
+    }
+
+    private String doReqularProcessingPhoneNum(String phoneNumber){
+        StringBuilder phoneBuilder = new StringBuilder(phoneNumber);
+        phoneBuilder.insert(3,"-");
+        phoneBuilder.insert(phoneBuilder.length()-4,"-");
+        return phoneBuilder.toString();
     }
 
 }
