@@ -45,7 +45,7 @@ dependencies {
 	runtime('com.h2database:h2:1.4.186')
 	runtime('mysql:mysql-connector-java:5.1.35')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-	//providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
 
 	def querydslVersion = "4.1.4"
 

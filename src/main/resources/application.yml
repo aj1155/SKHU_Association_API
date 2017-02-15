@@ -1,15 +1,17 @@
 spring:
   application:
     name: asct
-  devtools:
-    livereload:
-       enabled : true
-  freemarker:
-    cache: false
-  http:
-      multipart:
-        max-file-size: 1MB
-        max-request-size: 1MB
+
+
+  #devtools:
+   # livereload:
+    #   enabled : true
+  #freemarker:
+   # cache: false
+  #http:
+   #   multipart:
+    #    max-file-size: 1MB
+     #   max-request-size: 1MB
 
 dashboard.url: http://127.0.0.1
 
