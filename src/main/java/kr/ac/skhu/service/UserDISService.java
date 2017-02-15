@@ -1,6 +1,5 @@
 package kr.ac.skhu.service;
 
-import kr.ac.skhu.controller.model.response.AsctApiResponse;
 import kr.ac.skhu.domain.UserDIS;
 import kr.ac.skhu.repository.UserDISRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ public class UserDISService {
 
 
     /***** read *****/
-    public AsctApiResponse<UserDIS> read(int userId){
+    public UserDIS read(int userId){
         Optional<UserDIS> userDISOptional = Optional.ofNullable(userDISRepository.findByUserId(userId));
         UserDIS userDIS;
         if(!userDISOptional.isPresent()){
@@ -27,6 +26,6 @@ public class UserDISService {
         }else{
             userDIS = userDISOptional.get();
         }
-        return new AsctApiResponse<>(userDIS);
+        return userDIS;
     }
 }

@@ -42,6 +42,11 @@ public class UserService {
 
     /***** read *****/
 
+    public UserResponse readUserId(int userId){
+        User user = this.userRepository.findOne(userId);
+        return UserResponse.ofUser(user);
+    }
+
     public List<UserResponse> readUserByCategoryId(int categoryId){
         List<User> list = this.userRepository.findByCategoryId(categoryId);
         return convertUserEntityToResponse(list);

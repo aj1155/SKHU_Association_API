@@ -29,7 +29,6 @@ public class UserResponse {
     private int categoryId;
     private Position position;
 
-
     public static UserResponse ofUser(User user){
         return UserResponse.builder()
                 .id(user.getId())

@@ -15,9 +15,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Table(name ="user_discloser")
 @Entity
-public class UserDIS extends BaseEntity implements Serializable {
+public class UserDIS implements Serializable {
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,7 +51,7 @@ public class UserDIS extends BaseEntity implements Serializable {
 
     public static UserDIS ofCreate(int userId){
         return UserDIS.builder()
-                .userId(userId)
+                //.userId(userId)
                 .build();
     }
 }

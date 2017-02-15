@@ -19,8 +19,6 @@ dashboard.url: http://127.0.0.1
 jwt.secret: a1g2y47dg3dj59fjhhsd7cnewy73j
 jwt.expiration: 604800
 jwt.tokenheader: X-Auth-Token
-server:
-  context-path: /skhu
 
 
 

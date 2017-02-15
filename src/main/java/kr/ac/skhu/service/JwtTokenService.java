@@ -38,10 +38,11 @@ public class JwtTokenService {
             response.put("status",1000);
             return response;
         }
+        User user = this.userRepository.findOne((Integer) claims.get("user_id"));
         String token = generateToken(claims);
         response.put("token",token);
         response.put("status",200);
-        response.put("user",claims);
+        response.put("user",user);
         response.put("msg","Ok");
         return response;
     }

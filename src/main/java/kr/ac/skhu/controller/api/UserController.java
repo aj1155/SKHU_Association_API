@@ -3,7 +3,9 @@ package kr.ac.skhu.controller.api;
 import kr.ac.skhu.controller.model.request.UserRequest;
 import kr.ac.skhu.controller.model.response.AsctApiResponse;
 import kr.ac.skhu.controller.model.response.UserResponse;
+import kr.ac.skhu.domain.UserDIS;
 import kr.ac.skhu.service.JwtTokenService;
+import kr.ac.skhu.service.UserDISService;
 import kr.ac.skhu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,10 +27,14 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private UserDISService userDISService;
+
+    @Autowired
     private JwtTokenService jwtTokenService;
 
     /***** create *****/
     //Todo response로 Json util 형태로 보내주기
+
     @RequestMapping(value = "/",method = RequestMethod.POST)
     public AsctApiResponse<UserResponse> create(@Valid UserRequest userRequest){
         UserResponse user = this.userService.createUser(userRequest);
@@ -36,6 +42,13 @@ public class UserController {
     }
 
     /***** read *****/
+
+    /* user 공개 정보 검색 */
+    @RequestMapping(value = "/userId/{userId}",method = RequestMethod.GET)
+    public AsctApiResponse<UserDIS> readUserId(@PathVariable String userId){
+        UserDIS userDIS = this.userDISService.read(Integer.parseInt(userId));
+        return new AsctApiResponse<>(userDIS);
+    }
 
     /* 카테고리별 user*/
     @RequestMapping(value = "/category/{categoryId}",method = RequestMethod.GET)

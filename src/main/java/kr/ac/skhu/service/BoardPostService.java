@@ -39,6 +39,11 @@ public class BoardPostService {
         return BoardPostResponse.ofBoard(boardPost);
     }
 
+    public List<BoardPostResponse> readByBoardId(int ownBoardId,int startIndex){
+        List<BoardPost> boardPosts = this.boardPostRepository.readByBoardId(ownBoardId,startIndex);
+        return convertBoardPostEntityToResponse(boardPosts);
+    }
+
     /***** update *****/
     //Todo Json Utill 로 return 할 것!
     public Map<String,Object> update(BoardPostRequest boardPostRequest){

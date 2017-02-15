@@ -13,11 +13,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class ApiServerApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
+		/*
 		SpringApplicationBuilder springApplicationBuilder = new SpringApplicationBuilder(ApiServerApplication.class);
 		SpringApplication springApplication = springApplicationBuilder.build();
 		springApplication.run(args);
-
-		//SpringApplication.run(ApiServerApplication.class, args);
+		*/
+		SpringApplication.run(ApiServerApplication.class, args);
 	}
 
 	@Override

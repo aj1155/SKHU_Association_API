@@ -13,15 +13,6 @@ buildscript {
 apply plugin: 'war'
 apply plugin: 'org.springframework.boot'
 
-war {
-	baseName = 'skhu'
-	/*
-	baseName = project.warBaseName
-	version = project.warVersion
-	exclude("build/**")
-	*/
-}
-
 jar {
 	baseName = 'api-server'
 	version = '0.0.1-SNAPSHOT'
@@ -55,4 +46,63 @@ dependencies {
 	runtime('mysql:mysql-connector-java:5.1.35')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	//providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+	def querydslVersion = "4.1.4"
+
+	compile ("com.querydsl:querydsl-core:$querydslVersion")
+	compile ("com.querydsl:querydsl-apt:$querydslVersion")
+	compile ("com.querydsl:querydsl-jpa:$querydslVersion")
 }
+
+[compileJava,compileTestJava]*.options*.encoding = 'UTF-8'
+
+sourceSets{
+	generated {
+		java { srcDirs = ['src/main/generated/java']}
+	}
+	main {
+		java {
+			srcDirs 'src/main/java'
+			srcDirs 'src/main/generated/java'
+		}
+		resources { srcDir 'src/main/resources' }
+	}
+	test {
+		java { srcDir 'src/test/java' }
+		resources { srcDir 'src/test/resources' }
+	}
+}
+
+def queryDslOutput = file("src/main/generated/java")
+
+task generateQueryDSL(type: JavaCompile,group: 'build'){
+	doFirst {
+		if(!queryDslOutput.exists()){
+			logger.info("Creating `$queryDslOutput` directory")
+
+			if(!queryDslOutput.mkdirs()){
+				throw new InvalidUserDataException("Unable to Create `$queryDslOutput` directory")
+			}
+		}else{
+			FileCollection collection = files { file(queryDslOutput).listFiles() }
+			collection.each { delete it }
+		}
+	}
+
+	source = sourceSets.main.java
+	classpath = configurations.compile
+	options.compilerArgs = [
+			"-proc:only",
+			"-processor",
+			"com.querydsl.apt.jpa.JPAAnnotationProcessor"
+	]
+	destinationDir = queryDslOutput
+
+
+}
+
+clean {
+	delete queryDslOutput
+}
+
+compileTestJava.dependsOn(generateQueryDSL)

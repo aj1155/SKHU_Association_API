@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +34,12 @@ public class BoardPostController {
     public AsctApiResponse<BoardPostResponse> readOne(@PathVariable String boardPostId){
         BoardPostResponse boardPostResponse = this.boardPostService.readById(Integer.parseInt(boardPostId));
         return new AsctApiResponse<>(boardPostResponse);
+    }
+
+    @RequestMapping(value = "/ownBoardId/{ownBoardId}/startIndex/{startIndex}",method = RequestMethod.GET)
+    public AsctApiResponse<List<BoardPostResponse>> readByBoardId(@PathVariable String ownBoardId,@PathVariable String startIndex){
+        List<BoardPostResponse> list = this.boardPostService.readByBoardId(Integer.parseInt(ownBoardId),Integer.parseInt(startIndex));
+        return new AsctApiResponse<>(list);
     }
 
     /***** update *****/
