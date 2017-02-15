@@ -1,17 +1,15 @@
 spring:
   application:
     name: asct
-
-
-  #devtools:
-   # livereload:
-    #   enabled : true
-  #freemarker:
-   # cache: false
-  #http:
-   #   multipart:
-    #    max-file-size: 1MB
-     #   max-request-size: 1MB
+  devtools:
+    livereload:
+       enabled : true
+  freemarker:
+    cache: false
+  http:
+      multipart:
+        max-file-size: 1MB
+        max-request-size: 1MB
 
 dashboard.url: http://127.0.0.1
 
@@ -24,4 +22,13 @@ jwt.tokenheader: X-Auth-Token
 
 
 
-
+## DataSource configuration
+spring.datasource.url: jdbc:mysql://127.0.0.1/association?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8
+spring.datasource.username: skhu
+spring.datasource.password: 1234
+spring.datasource.driverClassName: com.mysql.jdbc.Driver
+## Hibernate configuration
+# down part is reset rows or table so very seriously using
+spring.jpa.hibernate.ddl-auto: validate
+spring.jpa.hibernate.naming.strategy: org.hibernate.cfg.ImprovedNamingStrategy
+spring.jpa.show-sql: true
