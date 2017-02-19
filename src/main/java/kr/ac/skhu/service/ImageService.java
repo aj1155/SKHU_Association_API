@@ -1,17 +1,13 @@
 package kr.ac.skhu.service;
 
-import kr.ac.skhu.controller.model.request.ImageRequest;
-import kr.ac.skhu.controller.model.response.AsctApiResponse;
 import kr.ac.skhu.domain.Image;
 import kr.ac.skhu.repository.ImageRepository;
+import kr.ac.skhu.util.StorageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by Manki Kim on 2017-01-29.
@@ -19,37 +15,21 @@ import java.util.Arrays;
 @Service
 public class ImageService {
 
-    private static final String resoucePath = "/static/image/";
-
     @Autowired
     private ImageRepository imageRepository;
 
+    private final Path rootLocation;
+
+    @Autowired
+    public ImageService(StorageProperties storageProperties){
+        this.rootLocation = Paths.get(storageProperties.getLocation());
+    }
 
     /***** create *****/
 
-    public AsctApiResponse createProfileImage(ImageRequest[] imageRequests){
-
-        Arrays.stream(imageRequests).forEach(imageRequest -> {
-            String path = resoucePath + imageRequest.getUser_id();
-            Image profileImage = Image.ofCreate(path,imageRequest.getUser_id(),imageRequest.getSize());
-            imageRepository.save(profileImage);
-            try {
-                outPutStream(imageRequest.getImageFile(),path);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-        return new AsctApiResponse(AsctApiResponse.OK);
+    public void create(int userId,long fileSize){
+        Image image = Image.ofCreate(rootLocation.resolve(String.valueOf(userId)).toString(),userId,fileSize);
+        this.imageRepository.save(image);
     }
 
-
-
-    private void outPutStream(MultipartFile file, String path) throws FileNotFoundException {
-        FileOutputStream output = new FileOutputStream(path);
-        try {
-            output.write(file.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

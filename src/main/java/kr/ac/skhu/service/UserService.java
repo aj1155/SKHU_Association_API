@@ -7,6 +7,7 @@ import kr.ac.skhu.domain.User;
 import kr.ac.skhu.domain.UserDIS;
 import kr.ac.skhu.repository.UserDISRepository;
 import kr.ac.skhu.repository.UserRepository;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +50,11 @@ public class UserService {
 
     public List<UserResponse> readUserByCategoryId(int categoryId){
         List<User> list = this.userRepository.findByCategoryId(categoryId);
+        return convertUserEntityToResponse(list);
+    }
+
+    public List<UserResponse> readUserByCategoryIdByTime(int categoryId,String time){
+        List<User> list = this.userRepository.findByUpdateTime(categoryId,DateTime.parse(time));
         return convertUserEntityToResponse(list);
     }
 

@@ -24,6 +24,8 @@ public class QImage extends EntityPathBase<Image> {
     //inherited
     public final DateTimePath<org.joda.time.DateTime> createdDate = _super.createdDate;
 
+    public final StringPath fileName = createString("fileName");
+
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     //inherited
@@ -33,7 +35,7 @@ public class QImage extends EntityPathBase<Image> {
 
     public final NumberPath<Long> size = createNumber("size", Long.class);
 
-    public final StringPath userId = createString("userId");
+    public final NumberPath<Integer> userId = createNumber("userId", Integer.class);
 
     public QImage(String variable) {
         super(Image.class, forVariable(variable));

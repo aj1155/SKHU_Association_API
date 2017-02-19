@@ -22,11 +22,16 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
+    public final QBaseEntity _super = new QBaseEntity(this);
+
     public final StringPath birth = createString("birth");
 
     public final NumberPath<Integer> categoryId = createNumber("categoryId", Integer.class);
 
     public final StringPath companyNumber = createString("companyNumber");
+
+    //inherited
+    public final DateTimePath<org.joda.time.DateTime> createdDate = _super.createdDate;
 
     public final StringPath email = createString("email");
 
@@ -35,6 +40,9 @@ public class QUser extends EntityPathBase<User> {
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public final StringPath image = createString("image");
+
+    //inherited
+    public final DateTimePath<org.joda.time.DateTime> lastModifiedDate = _super.lastModifiedDate;
 
     public final StringPath loginId = createString("loginId");
 

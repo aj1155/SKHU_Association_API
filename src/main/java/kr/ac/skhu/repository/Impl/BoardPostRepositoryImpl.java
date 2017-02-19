@@ -18,11 +18,11 @@ public class BoardPostRepositoryImpl extends QueryDslRepositorySupport implement
         super(BoardPost.class);
     }
 
-
     @Override
     public List<BoardPost> readByBoardId(int boardId, int startIndex) {
         return from(qBoardPost)
                 .where(qBoardPost.ownBoardId.eq(boardId))
+                .orderBy(qBoardPost.lastModifiedDate.desc())
                 .offset(startIndex)
                 .limit(15)
                 .fetch();

@@ -57,6 +57,13 @@ public class UserController {
         return new AsctApiResponse<>(list);
     }
 
+    /* 카테고리별 user 동기화*/
+    @RequestMapping(value = "/category/{categoryId}/lastTime/{lastTime}",method = RequestMethod.GET)
+    public AsctApiResponse<List<UserResponse>> readUserByCategoryByTime(@PathVariable String categoryId,@PathVariable String lastTime){
+        List<UserResponse> list = this.userService.readUserByCategoryIdByTime(Integer.parseInt(categoryId),lastTime);
+        return new AsctApiResponse<>(list);
+    }
+
     /* 기수별 user*/
     @RequestMapping(value = "/category/{categoryId}/grade/{grade}",method = RequestMethod.GET)
     public AsctApiResponse<List<UserResponse>> readUserByGrade(@PathVariable String categoryId, @PathVariable String grade){

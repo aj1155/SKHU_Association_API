@@ -25,7 +25,11 @@ public class Image extends BaseEntity {
 
     @Column(name = "user_id")
     @NotNull
-    private String userId;
+    private int userId;
+
+    @Column(name = "file_name")
+    @NotNull
+    private String fileName;
 
     @Column(name = "size")
     @NotNull
@@ -35,7 +39,7 @@ public class Image extends BaseEntity {
     @NotNull
     private String path;
 
-    public static Image ofCreate(String path,String user_id,Long size){
+    public static Image ofCreate(String path,int user_id,Long size){
         return Image.builder()
                 .path(path)
                 .userId(user_id)

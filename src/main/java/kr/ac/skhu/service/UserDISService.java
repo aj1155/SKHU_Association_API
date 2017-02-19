@@ -1,5 +1,7 @@
 package kr.ac.skhu.service;
 
+import kr.ac.skhu.controller.model.request.UserDISRequest;
+import kr.ac.skhu.controller.model.response.AsctApiResponse;
 import kr.ac.skhu.domain.UserDIS;
 import kr.ac.skhu.repository.UserDISRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +29,13 @@ public class UserDISService {
             userDIS = userDISOptional.get();
         }
         return userDIS;
+    }
+
+    /***** update *****/
+
+    public AsctApiResponse update(UserDISRequest userDISRequest){
+        UserDIS userDIS = UserDIS.ofUpdate(userDISRequest);
+        this.userDISRepository.save(userDIS);
+        return new AsctApiResponse(AsctApiResponse.OK);
     }
 }

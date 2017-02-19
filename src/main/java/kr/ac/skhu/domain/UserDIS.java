@@ -1,5 +1,6 @@
 package kr.ac.skhu.domain;
 
+import kr.ac.skhu.controller.model.request.UserDISRequest;
 import lombok.*;
 
 import javax.persistence.*;
@@ -52,6 +53,18 @@ public class UserDIS implements Serializable {
     public static UserDIS ofCreate(int userId){
         return UserDIS.builder()
                 //.userId(userId)
+                .build();
+    }
+
+    public static UserDIS ofUpdate(UserDISRequest userDISRequest){
+        return UserDIS.builder()
+                .id(userDISRequest.getId())
+                .isCompanyNumber(userDISRequest.getIsCompanyNumber())
+                .isEmail(userDISRequest.getIsEmail())
+                .isImage(userDISRequest.getIsImage())
+                .isPhoneNumber(userDISRequest.getIsPhoneNumber())
+                .isStatus(userDISRequest.getIsStatus())
+                .userId(userDISRequest.getUserId())
                 .build();
     }
 }
