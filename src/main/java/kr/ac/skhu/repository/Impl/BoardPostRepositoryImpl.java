@@ -5,6 +5,8 @@ import kr.ac.skhu.domain.QBoardPost;
 import kr.ac.skhu.repository.custom.BoardPostRepositoryCustom;
 import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
@@ -13,6 +15,9 @@ import java.util.List;
 public class BoardPostRepositoryImpl extends QueryDslRepositorySupport implements BoardPostRepositoryCustom {
 
     QBoardPost qBoardPost = QBoardPost.boardPost;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public BoardPostRepositoryImpl(){
         super(BoardPost.class);

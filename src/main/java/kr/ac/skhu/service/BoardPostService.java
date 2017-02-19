@@ -35,7 +35,7 @@ public class BoardPostService {
 
     /***** read *****/
     public BoardPostResponse readById(int boardPostId){
-        BoardPost boardPost = this.boardPostRepository.findById(boardPostId);
+        BoardPost boardPost = this.boardPostRepository.findOne(boardPostId);
         return BoardPostResponse.ofBoard(boardPost);
     }
 

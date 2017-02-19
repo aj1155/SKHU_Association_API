@@ -30,15 +30,18 @@ public class BoardPostController {
     }
 
     /***** read *****/
-    @RequestMapping(value = "/{boarPostdId}",method = RequestMethod.GET)
-    public AsctApiResponse<BoardPostResponse> readOne(@PathVariable String boardPostId){
-        BoardPostResponse boardPostResponse = this.boardPostService.readById(Integer.parseInt(boardPostId));
+    @RequestMapping(value = "/{boardpostId}",method = RequestMethod.GET)
+    public AsctApiResponse<BoardPostResponse> readOne(@PathVariable String boardpostId){
+        BoardPostResponse boardPostResponse = this.boardPostService.readById(Integer.parseInt(boardpostId));
         return new AsctApiResponse<>(boardPostResponse);
     }
 
     @RequestMapping(value = "/ownBoardId/{ownBoardId}/startIndex/{startIndex}",method = RequestMethod.GET)
     public AsctApiResponse<List<BoardPostResponse>> readByBoardId(@PathVariable String ownBoardId,@PathVariable String startIndex){
         List<BoardPostResponse> list = this.boardPostService.readByBoardId(Integer.parseInt(ownBoardId),Integer.parseInt(startIndex));
+        if(list.size()==0){
+            return new AsctApiResponse<>(AsctApiResponse.NODATA);
+        }
         return new AsctApiResponse<>(list);
     }
 
