@@ -21,7 +21,7 @@ jwt.expiration: 604800
 jwt.tokenheader: X-Auth-Token
 
 ### static ###
-static.resource.location : C:\Users\USER\skhu\api-server\src\main\webapp\resources\image
+static.resource.location : /server/skhu_api/files
 
 
 ## DataSource configuration

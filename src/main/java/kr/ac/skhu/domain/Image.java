@@ -28,7 +28,6 @@ public class Image extends BaseEntity {
     private int userId;
 
     @Column(name = "file_name")
-    @NotNull
     private String fileName;
 
     @Column(name = "size")
