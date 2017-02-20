@@ -22,7 +22,7 @@ import java.util.List;
  * Created by Manki Kim on 2017-01-30.
  */
 @RestController
-@RequestMapping(value="/v1/files")
+@RequestMapping(value="/api/v1/files")
 public class FileUploadController {
 
     @Autowired
