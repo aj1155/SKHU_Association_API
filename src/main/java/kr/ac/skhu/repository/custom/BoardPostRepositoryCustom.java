@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface BoardPostRepositoryCustom {
     List<BoardPost> readByBoardId(int boardId,int startIndex);
+    List<BoardPost> readByBoardIdAndWriter(int boardId,int startIndex,String srchText);
+    List<BoardPost> readByBoardIdAndContent(int boardId,int startIndex,String srchText);
 }

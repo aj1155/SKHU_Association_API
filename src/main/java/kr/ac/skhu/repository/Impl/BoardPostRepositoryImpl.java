@@ -1,5 +1,6 @@
 package kr.ac.skhu.repository.Impl;
 
+import com.querydsl.core.BooleanBuilder;
 import kr.ac.skhu.domain.BoardPost;
 import kr.ac.skhu.domain.QBoardPost;
 import kr.ac.skhu.repository.custom.BoardPostRepositoryCustom;
@@ -27,6 +28,31 @@ public class BoardPostRepositoryImpl extends QueryDslRepositorySupport implement
     public List<BoardPost> readByBoardId(int boardId, int startIndex) {
         return from(qBoardPost)
                 .where(qBoardPost.ownBoardId.eq(boardId))
+                .orderBy(qBoardPost.lastModifiedDate.desc())
+                .offset(startIndex)
+                .limit(15)
+                .fetch();
+    }
+
+    @Override
+    public List<BoardPost> readByBoardIdAndWriter(int boardId, int startIndex, String srchText) {
+        return from(qBoardPost)
+                .where(qBoardPost.ownBoardId.eq(boardId))
+                .where(qBoardPost.writer_name.like(srchText))
+                .orderBy(qBoardPost.lastModifiedDate.desc())
+                .offset(startIndex)
+                .limit(15)
+                .fetch();
+    }
+
+    @Override
+    public List<BoardPost> readByBoardIdAndContent(int boardId, int startIndex, String srchText) {
+        BooleanBuilder whereClause = new BooleanBuilder();
+        whereClause.and(qBoardPost.ownBoardId.eq(boardId));
+        whereClause.and(qBoardPost.title.contains(srchText));
+        whereClause.or(qBoardPost.content.contains(srchText));
+        return from(qBoardPost)
+                .where(whereClause)
                 .orderBy(qBoardPost.lastModifiedDate.desc())
                 .offset(startIndex)
                 .limit(15)

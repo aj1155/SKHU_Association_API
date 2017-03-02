@@ -23,7 +23,7 @@ public class BoardPostController {
 
 
     /***** create *****/
-    @RequestMapping(value = "/",method = RequestMethod.POST)
+    @RequestMapping(value = "",method = RequestMethod.POST)
     public AsctApiResponse<BoardPostResponse> create(@Valid @RequestBody BoardPostRequest boardPostRequest){
         BoardPostResponse boardPostResponse = this.boardPostService.create(boardPostRequest);
         return new AsctApiResponse<>(boardPostResponse);
@@ -36,9 +36,11 @@ public class BoardPostController {
         return new AsctApiResponse<>(boardPostResponse);
     }
 
-    @RequestMapping(value = "/ownBoardId/{ownBoardId}/startIndex/{startIndex}",method = RequestMethod.GET)
-    public AsctApiResponse<List<BoardPostResponse>> readByBoardId(@PathVariable String ownBoardId,@PathVariable String startIndex){
-        List<BoardPostResponse> list = this.boardPostService.readByBoardId(Integer.parseInt(ownBoardId),Integer.parseInt(startIndex));
+    @RequestMapping(value = "/ownBoardId/{ownBoardId}/srchType/{srchType}/srchText/{srchText}/startIndex/{startIndex}",method = RequestMethod.GET)
+    public AsctApiResponse<List<BoardPostResponse>> readByBoardId(@PathVariable String ownBoardId,@PathVariable String srchType,
+                                                                  @PathVariable String srchText,@PathVariable String startIndex){
+        List<BoardPostResponse> list = this.boardPostService.readByBoardId(Integer.parseInt(ownBoardId),Integer.parseInt(startIndex),
+                Integer.parseInt(srchType),srchText);
         if(list.size()==0){
             return new AsctApiResponse<>(AsctApiResponse.NODATA);
         }
@@ -47,7 +49,7 @@ public class BoardPostController {
 
     /***** update *****/
     //Todo Json Util만들어서 채워서 보내기
-    @RequestMapping(value = "/",method = RequestMethod.PUT)
+    @RequestMapping(value = "",method = RequestMethod.PUT)
     public AsctApiResponse update(@Valid @RequestBody BoardPostRequest boardPostRequest){
         Map<String,Object> result = this.boardPostService.update(boardPostRequest);
         return new AsctApiResponse<>(result);

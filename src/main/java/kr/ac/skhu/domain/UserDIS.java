@@ -19,7 +19,7 @@ import java.io.Serializable;
 @ToString
 @Table(name ="user_discloser")
 @Entity
-public class UserDIS implements Serializable {
+public class UserDIS extends BaseEntity implements Serializable {
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)

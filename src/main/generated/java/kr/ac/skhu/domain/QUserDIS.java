@@ -19,6 +19,11 @@ public class QUserDIS extends EntityPathBase<UserDIS> {
 
     public static final QUserDIS userDIS = new QUserDIS("userDIS");
 
+    public final QBaseEntity _super = new QBaseEntity(this);
+
+    //inherited
+    public final DateTimePath<org.joda.time.DateTime> createdDate = _super.createdDate;
+
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public final BooleanPath isCompanyNumber = createBoolean("isCompanyNumber");
@@ -30,6 +35,9 @@ public class QUserDIS extends EntityPathBase<UserDIS> {
     public final BooleanPath isPhoneNumber = createBoolean("isPhoneNumber");
 
     public final BooleanPath isStatus = createBoolean("isStatus");
+
+    //inherited
+    public final DateTimePath<org.joda.time.DateTime> lastModifiedDate = _super.lastModifiedDate;
 
     public final NumberPath<Integer> userId = createNumber("userId", Integer.class);
 

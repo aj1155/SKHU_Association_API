@@ -39,8 +39,13 @@ public class BoardPostService {
         return BoardPostResponse.ofBoard(boardPost);
     }
 
-    public List<BoardPostResponse> readByBoardId(int ownBoardId,int startIndex){
-        List<BoardPost> boardPosts = this.boardPostRepository.readByBoardId(ownBoardId,startIndex);
+    public List<BoardPostResponse> readByBoardId(int ownBoardId,int startIndex,int srchType,String srchText){
+        List<BoardPost> boardPosts = new ArrayList<>();
+        switch (srchType){
+            case 1 : boardPosts = this.boardPostRepository.readByBoardId(ownBoardId,startIndex); break;
+            case 2 : boardPosts = this.boardPostRepository.readByBoardIdAndWriter(ownBoardId,startIndex,srchText); break;
+            case 3 : boardPosts = this.boardPostRepository.readByBoardIdAndContent(ownBoardId,startIndex,srchText); break;
+        }
         return convertBoardPostEntityToResponse(boardPosts);
     }
 
