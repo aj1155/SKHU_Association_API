@@ -50,7 +50,8 @@ public class FileStorageService implements StorageService {
             if(file.isEmpty())
                 throw new StorageException("빈 파일은 저장 할 수 없습니다."+ file.getOriginalFilename());
 
-            Files.copy(file.getInputStream(),this.rootLocation.resolve(file.getOriginalFilename()));
+            //Files.copy(file.getInputStream(),this.rootLocation.resolve(file.getOriginalFilename()));
+            Files.copy(file.getInputStream(),this.rootLocation.resolve(identifier+"&&"+file.getOriginalFilename()));
         } catch (IOException e) {
             throw new StorageException("다음과 같은 파일을 저장하는데 실패 하였습니다 -" + file.getOriginalFilename(),e);
         }

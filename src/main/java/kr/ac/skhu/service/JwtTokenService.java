@@ -47,6 +47,17 @@ public class JwtTokenService {
         return response;
     }
 
+    public String getUserIdFromToken(String token) {
+        String userId;
+        try {
+            final Claims claims = this.getClaimsFromToken(token);
+            userId = (String) claims.get("user_id");
+        } catch (Exception e) {
+            userId = null;
+        }
+        return userId;
+    }
+
     public String getUsernameFromToken(String token) {
         String username;
         try {

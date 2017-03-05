@@ -3,6 +3,7 @@ package kr.ac.skhu.controller.api;
 import kr.ac.skhu.controller.exception.StorageException;
 import kr.ac.skhu.controller.exception.StorageFileNotFoundException;
 import kr.ac.skhu.service.ImageService;
+import kr.ac.skhu.service.JwtTokenService;
 import kr.ac.skhu.service.root.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ import java.util.List;
  * Created by Manki Kim on 2017-01-30.
  */
 @RestController
-@RequestMapping(value="/api/v1/files")
+@RequestMapping(value="/v1/files")
 public class FileUploadController {
 
     @Autowired
@@ -31,6 +33,8 @@ public class FileUploadController {
     @Autowired
     private StorageService storageService;
 
+    @Autowired
+    private JwtTokenService jwtTokenService;
 
     @GetMapping("/list")
     public ResponseEntity<List<String>> fileList() throws StorageException {
@@ -58,7 +62,9 @@ public class FileUploadController {
     }
 
     @PostMapping("/profile")
-    public ResponseEntity<?> fileUploadByProfileImage(@RequestParam("file") MultipartFile file,@RequestParam("userId") String userId,RedirectAttributes redirectAttributes) throws StorageException {
+    public ResponseEntity<?> fileUploadByProfileImage(@RequestParam("file") MultipartFile file,RedirectAttributes redirectAttributes,HttpServletRequest request) throws StorageException {
+        String token = (String)request.getHeader("token");
+        String userId = this.jwtTokenService.getUserIdFromToken(token);
         this.storageService.init();
         this.imageService.create(Integer.parseInt(userId),file.getSize());
         this.storageService.store(file,userId);
