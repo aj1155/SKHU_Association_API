@@ -25,7 +25,7 @@ import java.util.stream.Stream;
  * Created by Manki Kim on 2017-03-05.
  */
 @Service
-public class BoardFileService implements StorageService{
+public class BoardFileService implements StorageService {
 
     private final Path rootLocation;
 

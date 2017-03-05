@@ -4,7 +4,7 @@ import kr.ac.skhu.controller.exception.StorageException;
 import kr.ac.skhu.controller.exception.StorageFileNotFoundException;
 import kr.ac.skhu.service.ImageService;
 import kr.ac.skhu.service.JwtTokenService;
-import kr.ac.skhu.service.root.StorageService;
+import kr.ac.skhu.service.file.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -31,7 +31,7 @@ public class FileUploadController {
     private ImageService imageService;
 
     @Autowired
-    private StorageService storageService;
+    private FileStorageService storageService;
 
     @Autowired
     private JwtTokenService jwtTokenService;

@@ -18,6 +18,6 @@ public class StorageProperties {
     @Value("${static.resource.location}")
     private String location;
 
-    @Value("${static.resource.location.board}")
+    @Value("${resource.board}")
     private String board_location;
 }
