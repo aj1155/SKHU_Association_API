@@ -1,4 +1,4 @@
-package kr.ac.skhu.service;
+package kr.ac.skhu.service.file;
 
 import kr.ac.skhu.controller.exception.StorageException;
 import kr.ac.skhu.controller.exception.StorageFileNotFoundException;
@@ -16,21 +16,22 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Created by Manki Kim on 2017-02-19.
+ * Created by Manki Kim on 2017-03-05.
  */
 @Service
-public class FileStorageService implements StorageService {
+public class BoardFileService implements StorageService{
 
     private final Path rootLocation;
 
     @Autowired
-    public FileStorageService(StorageProperties storageProperties){
-        this.rootLocation = Paths.get(storageProperties.getLocation());
+    public BoardFileService(StorageProperties storageProperties){
+        this.rootLocation = Paths.get(storageProperties.getBoard_location());
     }
 
     @Override
@@ -55,6 +56,23 @@ public class FileStorageService implements StorageService {
         } catch (IOException e) {
             throw new StorageException("다음과 같은 파일을 저장하는데 실패 하였습니다 -" + file.getOriginalFilename(),e);
         }
+    }
+
+    public void storeMuti(MultipartFile[] files, String identifier) throws StorageException {
+        Arrays.stream(files).forEach(file -> {
+            if (file.isEmpty())
+                try {
+                    throw new StorageException("빈 파일은 저장 할 수 없습니다." + file.getOriginalFilename());
+                } catch (StorageException e) {
+                    e.printStackTrace();
+                }
+            //Files.copy(file.getInputStream(),this.rootLocation.resolve(file.getOriginalFilename()));
+            try {
+                Files.copy(file.getInputStream(), this.rootLocation.resolve(identifier + "&&" + file.getOriginalFilename()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override

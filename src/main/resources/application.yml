@@ -23,6 +23,8 @@ jwt.tokenheader: X-Auth-Token
 ### static ###
 static.resource.location : /server/skhu_api/files
 
+static.resource.location.board : /server/skhu_api/files/board
+
 
 ## DataSource configuration
 spring.datasource.url: jdbc:mysql://127.0.0.1/association?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
