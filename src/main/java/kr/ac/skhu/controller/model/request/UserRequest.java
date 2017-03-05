@@ -19,4 +19,19 @@ public class UserRequest {
     private String user_name;
     @NotNull
     private String categoryId;
+    @NotNull
+    private String email;
+    @NotNull
+    private String birth;
+    @NotNull
+    private String company_number;
+    @NotNull
+    private String phone_number;
+    @NotNull
+    private String status;
+    private int grade;
+    private int user_type;
+
+
+
 }
