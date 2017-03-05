@@ -5,7 +5,9 @@ import kr.ac.skhu.controller.exception.StorageFileNotFoundException;
 import kr.ac.skhu.controller.model.request.BoardPostRequest;
 import kr.ac.skhu.controller.model.response.AsctApiResponse;
 import kr.ac.skhu.controller.model.response.BoardPostResponse;
+import kr.ac.skhu.domain.BoardPost;
 import kr.ac.skhu.service.BoardPostService;
+import kr.ac.skhu.service.JwtTokenService;
 import kr.ac.skhu.service.file.BoardFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.List;
@@ -23,7 +26,7 @@ import java.util.Map;
  * Created by Manki Kim on 2017-01-23.
  */
 @RestController
-@RequestMapping(value = "/v1/boardpost")
+@RequestMapping(value = "/api/v1/boardpost")
 public class BoardPostController {
 
     @Autowired
@@ -32,6 +35,8 @@ public class BoardPostController {
     @Autowired
     private BoardFileService boardFileService;
 
+    @Autowired
+    private JwtTokenService jwtTokenService;
 
     /***** create *****/
     @RequestMapping(value = "",method = RequestMethod.POST)
@@ -41,10 +46,15 @@ public class BoardPostController {
     }
 
     @PostMapping("/withFile")
-    public ResponseEntity<?> withFIle(@RequestParam("file") MultipartFile[] files, @RequestParam("boardPostId") String boardPostId, RedirectAttributes redirectAttributes) throws StorageException {
+    public ResponseEntity<?> withFIle(@RequestParam("file") MultipartFile[] files,@RequestParam("content") String content,HttpServletRequest request
+            ,@RequestParam("boardId") String boardId, @RequestParam("title") String title,RedirectAttributes redirectAttributes) throws StorageException {
+        String token = (String)request.getHeader("token");
+        String userId = this.jwtTokenService.getUserIdFromToken(token);
+        String userName = this.jwtTokenService.getUsernameFromToken(token);
+        BoardPost boardPost = BoardPost.ofCreate(title,content,Integer.parseInt(boardId),Integer.parseInt(userId),userName);
+        BoardPostResponse boardPostResponse = this.boardPostService.createBoard(boardPost);
         this.boardFileService.init();
-        this.boardFileService.storeMuti(files,boardPostId);
-
+        this.boardFileService.storeMuti(files,String.valueOf(boardPostResponse.getId()));
         return new ResponseEntity<String>("successfully uploaded  !" , HttpStatus.OK);
     }
 

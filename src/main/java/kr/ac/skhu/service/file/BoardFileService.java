@@ -2,6 +2,8 @@ package kr.ac.skhu.service.file;
 
 import kr.ac.skhu.controller.exception.StorageException;
 import kr.ac.skhu.controller.exception.StorageFileNotFoundException;
+import kr.ac.skhu.domain.BoardPostImage;
+import kr.ac.skhu.repository.BoardPostImageRepository;
 import kr.ac.skhu.service.root.StorageService;
 import kr.ac.skhu.util.StorageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ public class BoardFileService implements StorageService {
     public BoardFileService(StorageProperties storageProperties){
         this.rootLocation = Paths.get(storageProperties.getBoard_location());
     }
+
+    @Autowired
+    private BoardPostImageRepository boardPostImageRepository;
 
     @Override
     public void init() throws StorageException {
@@ -69,6 +74,7 @@ public class BoardFileService implements StorageService {
             //Files.copy(file.getInputStream(),this.rootLocation.resolve(file.getOriginalFilename()));
             try {
                 Files.copy(file.getInputStream(), this.rootLocation.resolve(identifier + "&&" + file.getOriginalFilename()));
+                this.boardPostImageRepository.save(BoardPostImage.of(this.rootLocation.resolve(identifier + "&&" + file.getOriginalFilename()).toString(),Integer.parseInt(identifier)));
             } catch (IOException e) {
                 e.printStackTrace();
             }

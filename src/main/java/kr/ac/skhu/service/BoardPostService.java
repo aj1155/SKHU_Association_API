@@ -33,6 +33,12 @@ public class BoardPostService {
         return BoardPostResponse.ofBoard(boardPost);
     }
 
+    public BoardPostResponse createBoard(BoardPost boardPost){
+        this.boardPostRepository.save(boardPost);
+        System.out.println(boardPost.getCreatedDate());
+        return BoardPostResponse.ofBoard(boardPost);
+    }
+
     /***** read *****/
     public BoardPostResponse readById(int boardPostId){
         BoardPost boardPost = this.boardPostRepository.findOne(boardPostId);
