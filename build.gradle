@@ -108,7 +108,3 @@ clean {
 }
 
 compileTestJava.dependsOn(generateQueryDSL)
-
-task wrapper(type: Wrapper) {
-	gradleVersion = '2.9'
-}
