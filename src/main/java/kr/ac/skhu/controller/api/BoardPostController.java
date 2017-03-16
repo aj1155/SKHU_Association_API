@@ -26,7 +26,7 @@ import java.util.Map;
  * Created by Manki Kim on 2017-01-23.
  */
 @RestController
-@RequestMapping(value = "/v1/boardpost")
+@RequestMapping(value = "/api/v1/boardpost")
 public class BoardPostController {
 
     @Autowired
