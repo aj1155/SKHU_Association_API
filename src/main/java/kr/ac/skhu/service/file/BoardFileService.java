@@ -55,7 +55,6 @@ public class BoardFileService implements StorageService {
         try{
             if(file.isEmpty())
                 throw new StorageException("빈 파일은 저장 할 수 없습니다."+ file.getOriginalFilename());
-
             //Files.copy(file.getInputStream(),this.rootLocation.resolve(file.getOriginalFilename()));
             Files.copy(file.getInputStream(),this.rootLocation.resolve(identifier+"&&"+file.getOriginalFilename()));
         } catch (IOException e) {

@@ -26,7 +26,7 @@ import java.util.Map;
  * Created by Manki Kim on 2017-01-23.
  */
 @RestController
-@RequestMapping(value = "/api/v1/boardpost")
+@RequestMapping(value = "/v1/boardpost")
 public class BoardPostController {
 
     @Autowired
@@ -77,7 +77,6 @@ public class BoardPostController {
     }
 
     /***** update *****/
-    //Todo Json Util만들어서 채워서 보내기
     @RequestMapping(value = "",method = RequestMethod.PUT)
     public AsctApiResponse update(@Valid @RequestBody BoardPostRequest boardPostRequest){
         Map<String,Object> result = this.boardPostService.update(boardPostRequest);
@@ -85,7 +84,6 @@ public class BoardPostController {
     }
 
     /***** delete *****/
-    //Todo JSON Util 만들어서 result 리턴
     @RequestMapping(value = "/{boardPostId}",method = RequestMethod.DELETE)
     public AsctApiResponse delete(@PathVariable String boardPostId){
         Map<String,Object> result = this.boardPostService.delete(Integer.parseInt(boardPostId));

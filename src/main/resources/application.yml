@@ -21,7 +21,7 @@ jwt.expiration: 604800
 jwt.tokenheader: X-Auth-Token
 
 ### static ###
-resource.board : /usr/share/tomcat9/webapps/api-server/resources/board_image
+resource.board : /usr/share/tomcat8/webapps/api-server/resources/board_image
 static.resource.location : /server/skhu_api/files
 
 
