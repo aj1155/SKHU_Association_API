@@ -59,13 +59,17 @@ public class BoardPostService {
     //Todo Json Utill 로 return 할 것!
     public Map<String,Object> update(BoardPostRequest boardPostRequest){
         BoardPost boardPost = BoardPost.ofUpdate(boardPostRequest.getId(),boardPostRequest.getTitle(),boardPostRequest.getContent()
-                                                    ,boardPostRequest.getOwnBoardId(),boardPostRequest.getWriter_id(),boardPostRequest.getWriter_name());
+                ,boardPostRequest.getOwnBoardId(),boardPostRequest.getWriter_id(),boardPostRequest.getWriter_name());
         this.boardPostRepository.save(boardPost);
         Map<String,Object> resultStatus = new HashMap<String,Object>();
         resultStatus.put("code",200);
         resultStatus.put("msg","정삭적으로 변경했습니다.");
 
         return resultStatus;
+    }
+
+    public BoardPostResponse updateBoard(BoardPost boardPost){
+        return BoardPostResponse.ofBoard(this.boardPostRepository.save(boardPost));
     }
     /***** delete *****/
     //TODO JSON Utill로 return

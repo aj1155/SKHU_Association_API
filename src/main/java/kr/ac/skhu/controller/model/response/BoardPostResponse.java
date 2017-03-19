@@ -16,6 +16,7 @@ public class BoardPostResponse {
     private int id;
     private String title;
     private String content;
+    private int writer_id;
     private String writer_name;
     private String write_time;
 
@@ -24,6 +25,7 @@ public class BoardPostResponse {
                 .id(boardPost.getId())
                 .title(boardPost.getTitle())
                 .content(boardPost.getContent())
+                .writer_id(boardPost.getWriter_id())
                 .write_time(boardPost.getCreatedDate().toString())
                 .writer_name(boardPost.getWriter_name())
                 .build();
@@ -34,6 +36,7 @@ public class BoardPostResponse {
                 .id(boardPost.getId())
                 .title(boardPost.getTitle())
                 .writer_name(boardPost.getWriter_name())
+                .writer_id(boardPost.getWriter_id())
                 .write_time(boardPost.getCreatedDate().toString())
                 .build();
     }

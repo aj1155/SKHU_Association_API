@@ -83,6 +83,19 @@ public class BoardPostController {
         return new AsctApiResponse<>(result);
     }
 
+    @PutMapping("/withFile")
+    public ResponseEntity<?> withFIleUpdate(@RequestParam("file") MultipartFile[] files,@RequestParam("content") String content,HttpServletRequest request
+            ,@RequestParam("boardPostId") String boardPostId,@RequestParam("boardId") String boardId ,@RequestParam("title") String title,RedirectAttributes redirectAttributes) throws StorageException {
+        String token = (String)request.getHeader("token");
+        String userId = this.jwtTokenService.getUserIdFromToken(token);
+        String userName = this.jwtTokenService.getUsernameFromToken(token);
+        BoardPost boardPost = BoardPost.ofUpdate(Integer.parseInt(boardPostId),title,content,Integer.parseInt(boardId),Integer.parseInt(userId),userName);
+        BoardPostResponse boardPostResponse = this.boardPostService.updateBoard(boardPost);
+        this.boardFileService.init();
+        this.boardFileService.storeMuti(files,String.valueOf(boardPostResponse.getId()));
+        return new ResponseEntity<String>("successfully uploaded  !" , HttpStatus.OK);
+    }
+
     /***** delete *****/
     @RequestMapping(value = "/{boardPostId}",method = RequestMethod.DELETE)
     public AsctApiResponse delete(@PathVariable String boardPostId){
