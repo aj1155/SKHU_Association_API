@@ -8,10 +8,7 @@ import kr.ac.skhu.service.JwtTokenService;
 import kr.ac.skhu.service.UserDISService;
 import kr.ac.skhu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -89,7 +86,7 @@ public class UserController {
 
     /* user 정보 업데이트 */
     @RequestMapping(value = "/",method = RequestMethod.PUT)
-    public AsctApiResponse<UserResponse> readSeniorManager(@Valid UserRequest userRequest){
+    public AsctApiResponse<UserResponse> readSeniorManager(@Valid @RequestBody UserRequest userRequest){
         return this.userService.update(userRequest);
     }
 
