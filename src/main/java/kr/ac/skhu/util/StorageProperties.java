@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 public class StorageProperties {
 
-    @Value("${static.resource.location}")
+    @Value("${image.location}")
     private String location;
 
     @Value("${resource.board}")

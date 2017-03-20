@@ -40,6 +40,21 @@ public class BoardFileService implements StorageService {
     private BoardPostImageRepository boardPostImageRepository;
 
     @Override
+    public void delete(List<String> lists) throws StorageException {
+        lists.forEach(list ->{
+            try {
+                Files.delete(load(list));
+            } catch (Exception e) {
+                try {
+                    throw new StorageException("해당 파일이 존제하지 않습니다.",e);
+                } catch (StorageException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @Override
     public void init() throws StorageException {
         try{
             if(!Files.exists(rootLocation)){
@@ -63,21 +78,21 @@ public class BoardFileService implements StorageService {
     }
 
     public void storeMuti(MultipartFile[] files, String identifier) throws StorageException {
-        Arrays.stream(files).forEach(file -> {
-            if (file.isEmpty())
+            Arrays.stream(files).forEach(file -> {
+                if (file.isEmpty()) {
+                    //throw new StorageException("빈 파일은 저장 할 수 없습니다." + file.getOriginalFilename());
+                }
+                if (!(file.getOriginalFilename().endsWith(".jpg") || file.getOriginalFilename().endsWith(".png"))) {
+                    //throw new StorageException("이미지 파일 형식이 아닙니다. 형식을 확인 해주세요");
+                }
+                //Files.copy(file.getInputStream(),this.rootLocation.resolve(file.getOriginalFilename()));
                 try {
-                    throw new StorageException("빈 파일은 저장 할 수 없습니다." + file.getOriginalFilename());
-                } catch (StorageException e) {
+                    Files.copy(file.getInputStream(), this.rootLocation.resolve(identifier + "&&" + file.getOriginalFilename()));
+                    this.boardPostImageRepository.save(BoardPostImage.of(this.rootLocation.resolve(identifier + "&&" + file.getOriginalFilename()).toString(), Integer.parseInt(identifier)));
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-            //Files.copy(file.getInputStream(),this.rootLocation.resolve(file.getOriginalFilename()));
-            try {
-                Files.copy(file.getInputStream(), this.rootLocation.resolve(identifier + "&&" + file.getOriginalFilename()));
-                this.boardPostImageRepository.save(BoardPostImage.of(this.rootLocation.resolve(identifier + "&&" + file.getOriginalFilename()).toString(),Integer.parseInt(identifier)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+            });
     }
 
     @Override

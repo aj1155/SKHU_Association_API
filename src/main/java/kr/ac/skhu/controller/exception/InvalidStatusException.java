@@ -1,8 +1,11 @@
 package kr.ac.skhu.controller.exception;
 
 /**
- * Created by 1002731 on 2016. 12. 30..
- * Email : eenan@sk.com
+ * Manki Kim
  */
 public class InvalidStatusException extends RuntimeException {
+    public InvalidStatusException() { super(); }
+    public InvalidStatusException(String message) { super(message); }
+    public InvalidStatusException(String message, Throwable cause) { super(message, cause); }
+    public InvalidStatusException(Throwable cause) { super(cause); }
 }

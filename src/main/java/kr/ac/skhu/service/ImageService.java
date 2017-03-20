@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Manki Kim on 2017-01-29.
@@ -25,10 +27,15 @@ public class ImageService {
         this.rootLocation = Paths.get(storageProperties.getLocation());
     }
 
+    public List<String> getPaths(int userId){
+        List<Image> images = this.imageRepository.findByUserId(userId);
+        return images.stream().map(Image::getPath).collect(Collectors.toList());
+    }
+
     /***** create *****/
 
-    public void create(int userId,long fileSize){
-        Image image = Image.ofCreate(rootLocation.resolve(String.valueOf(userId)).toString(),userId,fileSize);
+    public void create(int userId,long fileSize,String fileName){
+        Image image = Image.ofCreate(rootLocation.resolve(fileName).toString(),userId,fileSize);
         this.imageRepository.save(image);
     }
 

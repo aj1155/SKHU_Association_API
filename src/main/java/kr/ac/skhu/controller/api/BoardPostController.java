@@ -1,11 +1,13 @@
 package kr.ac.skhu.controller.api;
 
+import kr.ac.skhu.controller.exception.InvalidStatusException;
 import kr.ac.skhu.controller.exception.StorageException;
 import kr.ac.skhu.controller.exception.StorageFileNotFoundException;
 import kr.ac.skhu.controller.model.request.BoardPostRequest;
 import kr.ac.skhu.controller.model.response.AsctApiResponse;
 import kr.ac.skhu.controller.model.response.BoardPostResponse;
 import kr.ac.skhu.domain.BoardPost;
+import kr.ac.skhu.service.BoardPostImageService;
 import kr.ac.skhu.service.BoardPostService;
 import kr.ac.skhu.service.JwtTokenService;
 import kr.ac.skhu.service.file.BoardFileService;
@@ -36,6 +38,9 @@ public class BoardPostController {
     private BoardFileService boardFileService;
 
     @Autowired
+    private BoardPostImageService boardPostImageService;
+
+    @Autowired
     private JwtTokenService jwtTokenService;
 
     /***** create *****/
@@ -47,11 +52,11 @@ public class BoardPostController {
 
     @PostMapping("/withFile")
     public ResponseEntity<?> withFIle(@RequestParam("file") MultipartFile[] files,@RequestParam("content") String content,HttpServletRequest request
-            ,@RequestParam("boardId") String boardId, @RequestParam("title") String title,RedirectAttributes redirectAttributes) throws StorageException {
+            ,@RequestParam("boardId") String boardId, @RequestParam("title") String title,RedirectAttributes redirectAttributes) throws StorageException,InvalidStatusException {
         String token = (String)request.getHeader("token");
-        String userId = this.jwtTokenService.getUserIdFromToken(token);
+        int userId = this.jwtTokenService.getUserIdFromToken(token);
         String userName = this.jwtTokenService.getUsernameFromToken(token);
-        BoardPost boardPost = BoardPost.ofCreate(title,content,Integer.parseInt(boardId),Integer.parseInt(userId),userName);
+        BoardPost boardPost = BoardPost.ofCreate(title,content,Integer.parseInt(boardId),userId,userName);
         BoardPostResponse boardPostResponse = this.boardPostService.createBoard(boardPost);
         this.boardFileService.init();
         this.boardFileService.storeMuti(files,String.valueOf(boardPostResponse.getId()));
@@ -87,20 +92,26 @@ public class BoardPostController {
     public ResponseEntity<?> withFIleUpdate(@RequestParam("file") MultipartFile[] files,@RequestParam("content") String content,HttpServletRequest request
             ,@RequestParam("boardPostId") String boardPostId,@RequestParam("boardId") String boardId ,@RequestParam("title") String title,RedirectAttributes redirectAttributes) throws StorageException {
         String token = (String)request.getHeader("token");
-        String userId = this.jwtTokenService.getUserIdFromToken(token);
+        int userId = this.jwtTokenService.getUserIdFromToken(token);
         String userName = this.jwtTokenService.getUsernameFromToken(token);
-        BoardPost boardPost = BoardPost.ofUpdate(Integer.parseInt(boardPostId),title,content,Integer.parseInt(boardId),Integer.parseInt(userId),userName);
-        BoardPostResponse boardPostResponse = this.boardPostService.updateBoard(boardPost);
+        BoardPost boardPost = BoardPost.ofUpdate(Integer.parseInt(boardPostId),title,content,Integer.parseInt(boardId),userId,userName);
+        int modiBoardId = this.boardPostService.updateBoard(boardPost).getId();
         this.boardFileService.init();
-        this.boardFileService.storeMuti(files,String.valueOf(boardPostResponse.getId()));
+        this.boardFileService.storeMuti(files,String.valueOf(modiBoardId));
         return new ResponseEntity<String>("successfully uploaded  !" , HttpStatus.OK);
     }
 
     /***** delete *****/
     @RequestMapping(value = "/{boardPostId}",method = RequestMethod.DELETE)
-    public AsctApiResponse delete(@PathVariable String boardPostId){
+    public AsctApiResponse delete(@PathVariable String boardPostId) throws StorageException {
+        this.boardFileService.delete(this.boardPostImageService.getPaths(Integer.parseInt(boardPostId)));
         Map<String,Object> result = this.boardPostService.delete(Integer.parseInt(boardPostId));
         return new AsctApiResponse<>(result);
+    }
+
+    @ExceptionHandler(InvalidStatusException.class)
+    public ResponseEntity<?> handleUserNotFound(StorageFileNotFoundException exc) {
+        return new ResponseEntity<String>("유저 정보를 다시 확인 해주세요",HttpStatus.NO_CONTENT);
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

@@ -34,6 +34,21 @@ public class FileStorageService implements StorageService {
     }
 
     @Override
+    public void delete(List<String> lists) throws StorageException {
+        lists.forEach(list ->{
+            try {
+                Files.delete(load(list));
+            } catch (Exception e) {
+                try {
+                    throw new StorageException("해당 파일이 존제하지 않습니다.",e);
+                } catch (StorageException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @Override
     public void init() throws StorageException {
         try{
             if(!Files.exists(rootLocation)){
@@ -50,8 +65,15 @@ public class FileStorageService implements StorageService {
             if(file.isEmpty())
                 throw new StorageException("빈 파일은 저장 할 수 없습니다."+ file.getOriginalFilename());
 
+            if(!(file.getOriginalFilename().endsWith(".jpg") || file.getOriginalFilename().endsWith(".png"))){
+                try {
+                    throw new StorageException();
+                } catch (StorageException e) {
+                    throw new StorageException("이미지 파일 형식이 아닙니다. 형식을 확인 해주세요");
+                }
+            }
             //Files.copy(file.getInputStream(),this.rootLocation.resolve(file.getOriginalFilename()));
-            Files.copy(file.getInputStream(),this.rootLocation.resolve(identifier+"&&"+file.getOriginalFilename()));
+            Files.copy(file.getInputStream(),this.rootLocation.resolve(file.getOriginalFilename()));
         } catch (IOException e) {
             throw new StorageException("다음과 같은 파일을 저장하는데 실패 하였습니다 -" + file.getOriginalFilename(),e);
         }

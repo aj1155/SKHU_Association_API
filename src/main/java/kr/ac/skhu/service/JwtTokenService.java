@@ -3,6 +3,7 @@ package kr.ac.skhu.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import kr.ac.skhu.controller.exception.InvalidStatusException;
 import kr.ac.skhu.controller.model.request.UserRequest;
 import kr.ac.skhu.domain.User;
 import kr.ac.skhu.repository.UserRepository;
@@ -47,13 +48,14 @@ public class JwtTokenService {
         return response;
     }
 
-    public String getUserIdFromToken(String token) {
-        String userId;
+    public int getUserIdFromToken(String token) throws InvalidStatusException {
+        int userId;
         try {
             final Claims claims = this.getClaimsFromToken(token);
-            userId = (String) claims.get("user_id");
+            userId = (Integer) claims.get("user_id");
+            System.out.println(userId);
         } catch (Exception e) {
-            userId = null;
+            throw new InvalidStatusException("해당 유저아이디에 문제가 있습니다. 로그아웃 후에 다시 로그인 해주세요");
         }
         return userId;
     }

@@ -1,5 +1,6 @@
 package kr.ac.skhu.controller.api;
 
+import kr.ac.skhu.controller.exception.InvalidStatusException;
 import kr.ac.skhu.controller.exception.StorageException;
 import kr.ac.skhu.controller.exception.StorageFileNotFoundException;
 import kr.ac.skhu.service.ImageService;
@@ -53,6 +54,14 @@ public class FileUploadController {
                             .body(file);
     }
 
+    @DeleteMapping("")
+    public ResponseEntity<?> fileDelete(HttpServletRequest request) throws StorageFileNotFoundException, UnsupportedEncodingException, StorageException {
+        String token = request.getHeader("token");
+        int userId = this.jwtTokenService.getUserIdFromToken(token);
+        this.storageService.delete(this.imageService.getPaths(userId));
+        return new ResponseEntity<String>("successfully delete !" , HttpStatus.OK);
+    }
+
     @PostMapping("/board")
     public ResponseEntity<?> fileUploadByBoard(@RequestParam("file") MultipartFile file,@RequestParam("boardPostId") String boardPostId,RedirectAttributes redirectAttributes) throws StorageException {
         this.storageService.init();
@@ -62,14 +71,20 @@ public class FileUploadController {
     }
 
     @PostMapping("/profile")
-    public ResponseEntity<?> fileUploadByProfileImage(@RequestParam("file") MultipartFile file,RedirectAttributes redirectAttributes,HttpServletRequest request) throws StorageException {
+    public ResponseEntity<?> fileUploadByProfileImage(@RequestParam("file") MultipartFile file,RedirectAttributes redirectAttributes,HttpServletRequest request) throws StorageException,InvalidStatusException {
         String token = (String)request.getHeader("token");
-        String userId = this.jwtTokenService.getUserIdFromToken(token);
+        int userId = this.jwtTokenService.getUserIdFromToken(token);
+        System.out.println(userId);
         this.storageService.init();
-        this.imageService.create(Integer.parseInt(userId),file.getSize());
-        this.storageService.store(file,userId);
+        this.imageService.create(userId,file.getSize(),file.getOriginalFilename());
+        this.storageService.store(file,String.valueOf(userId));
 
         return new ResponseEntity<String>("successfully uploaded " + file.getOriginalFilename() + "!" , HttpStatus.OK);
+    }
+
+    @ExceptionHandler(InvalidStatusException.class)
+    public ResponseEntity<?> handleUserNotFound(StorageFileNotFoundException exc) {
+        return new ResponseEntity<String>("유저 정보를 다시 확인 해주세요",HttpStatus.NO_CONTENT);
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

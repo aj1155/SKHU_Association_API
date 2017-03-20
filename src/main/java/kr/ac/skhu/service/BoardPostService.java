@@ -8,6 +8,7 @@ import kr.ac.skhu.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,9 @@ public class BoardPostService {
 
     @Autowired
     private BoardPostRepository boardPostRepository;
+
+    @Autowired
+    private BoardPostImageService boardPostImageService;
 
     @Autowired
     private BoardRepository boardRepository;
@@ -68,12 +72,14 @@ public class BoardPostService {
         return resultStatus;
     }
 
-    public BoardPostResponse updateBoard(BoardPost boardPost){
-        return BoardPostResponse.ofBoard(this.boardPostRepository.save(boardPost));
+    public BoardPost updateBoard(BoardPost boardPost){
+        return this.boardPostRepository.save(boardPost);
     }
     /***** delete *****/
     //TODO JSON Utill로 return
+    @Transactional
     public Map<String,Object> delete(int boardPostId){
+        this.boardPostImageService.delete(boardPostId);
         this.boardPostRepository.delete(boardPostId);
         Map<String,Object> resultStatus = new HashMap<String,Object>();
         resultStatus.put("code",200);
