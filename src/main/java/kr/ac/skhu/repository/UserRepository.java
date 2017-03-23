@@ -14,6 +14,5 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Integer>,UserRepositoryCustom {
     List<User> findByCategoryId(int categoryId);
     List<User> findByCategoryIdAndGrade(int categoryId, int grade);
-    User findByLoginIdAndPassword(String login_id, String password);
-    User findByLoginIdAndPasswordAndCategoryId(String login_id, String password,int categoryId);
+    User findByLoginIdAndCategoryId(String loginId,int categoryId);
 }

@@ -3,13 +3,13 @@ package kr.ac.skhu.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import kr.ac.skhu.component.PasswordEncoding;
 import kr.ac.skhu.controller.exception.InvalidStatusException;
 import kr.ac.skhu.controller.model.request.UserRequest;
 import kr.ac.skhu.domain.User;
 import kr.ac.skhu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -24,6 +24,9 @@ public class JwtTokenService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoding passwordEncoding;
 
     // default 7 days
     @Value("${jwt.expiration}")
@@ -116,8 +119,7 @@ public class JwtTokenService {
 
     private User loginPassingDo(UserRequest userRequest){
         //TODO QueryDsl로 변경
-        String encodedPassword = new BCryptPasswordEncoder().encode(userRequest.getPassword());
-        User user = this.userRepository.findByLoginIdAndPasswordAndCategoryId(userRequest.getLogin_id(),encodedPassword,Integer.parseInt(userRequest.getCategoryId()));
-        return (user==null)? null:user;
+        User user = this.userRepository.findByLoginIdAndCategoryId(userRequest.getLogin_id(),Integer.parseInt(userRequest.getCategoryId()));
+        return (this.passwordEncoding.matches(userRequest.getPassword(),user.getPassword()))? user:null;
     }
 }

@@ -1,5 +1,6 @@
 package kr.ac.skhu.service;
 
+import kr.ac.skhu.component.PasswordEncoding;
 import kr.ac.skhu.controller.model.request.UserRequest;
 import kr.ac.skhu.controller.model.response.AsctApiResponse;
 import kr.ac.skhu.controller.model.response.UserResponse;
@@ -11,7 +12,6 @@ import kr.ac.skhu.repository.UserDISRepository;
 import kr.ac.skhu.repository.UserRepository;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -34,6 +34,9 @@ public class UserService {
 
     @Autowired
     private PositionRepository positionRepository;
+
+    @Autowired
+    private PasswordEncoding passwordEncoding;
 
     /***** create *****/
 
@@ -92,7 +95,7 @@ public class UserService {
     /***** update *****/
 
     public AsctApiResponse<UserResponse> update(UserRequest userRequest){
-        String encodedPassword = new BCryptPasswordEncoder().encode(userRequest.getPassword());
+        String encodedPassword = this.passwordEncoding.encode(userRequest.getPassword());
         Position position = this.positionRepository.findOne(userRequest.getUser_type());
         User user = User.ofUpdate(userRequest.getId(),position,userRequest.getLogin_id(),userRequest.getUser_name(),encodedPassword,userRequest.getEmail()
         ,userRequest.getCompany_number(),userRequest.getPhone_number(),userRequest.getStatus(),userRequest.getGrade(),userRequest.getBirth(),Integer.parseInt(userRequest.getCategoryId()));

@@ -1,10 +1,12 @@
 package kr.ac.skhu;
 
 
+import kr.ac.skhu.component.PasswordEncoding;
 import kr.ac.skhu.controller.filter.CORSFilter;
 import kr.ac.skhu.controller.interceptor.JwtInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +30,10 @@ import java.util.List;
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
 
+
+    @Autowired
+    private JwtInterceptor jwtInterceptor;
+
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters){
 
@@ -41,19 +47,17 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         converters.add(resource);
     }
 
-    @Autowired
-    private JwtInterceptor jwtInterceptor;
-
-
     @Bean
     public CORSFilter corsFilter(@Value("${dashboard.url}") String dashboardUrl) {
         return new CORSFilter(dashboardUrl);
     }
+
     @Bean
     public HttpMessageConverter<String> responseBodyConverter() {
         return new StringHttpMessageConverter(Charset.forName("UTF-8"));
     }
 
+    /*
     @Bean
     public CharacterEncodingFilter characterEncodingFilter() {
         CharacterEncodingFilter characterEncodingFilter;
@@ -61,6 +65,21 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         characterEncodingFilter.setEncoding("UTF-8");
         characterEncodingFilter.setForceEncoding(true);
         return characterEncodingFilter;
+    }
+    */
+
+    @Bean
+    public FilterRegistrationBean filterRegistrationBean() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding("UTF-8");
+        registrationBean.setFilter(characterEncodingFilter);
+        return registrationBean;
+    }
+
+    @Bean
+    public PasswordEncoding passwordEncoding(){
+        return new PasswordEncoding();
     }
 
     @Override

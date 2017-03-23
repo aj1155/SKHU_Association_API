@@ -59,7 +59,7 @@ public class BoardPostController {
         BoardPost boardPost = BoardPost.ofCreate(title,content,Integer.parseInt(boardId),userId,userName);
         BoardPostResponse boardPostResponse = this.boardPostService.createBoard(boardPost);
         this.boardFileService.init();
-        this.boardFileService.storeMuti(files,String.valueOf(boardPostResponse.getId()));
+        this.boardFileService.storeMuti(files,boardId);
         return new ResponseEntity<String>("successfully uploaded  !" , HttpStatus.OK);
     }
 
@@ -95,10 +95,10 @@ public class BoardPostController {
         String token = (String)request.getHeader("token");
         int userId = this.jwtTokenService.getUserIdFromToken(token);
         String userName = this.jwtTokenService.getUsernameFromToken(token);
-        BoardPost boardPost = BoardPost.ofUpdate(Integer.parseInt(boardId),title,content,Integer.parseInt(boardId),userId,userName);
+        BoardPost boardPost = BoardPost.ofUpdate(Integer.parseInt(boardPostId),title,content,Integer.parseInt(boardId),userId,userName);
         int modiBoardId = this.boardPostService.updateBoard(boardPost).getId();
         this.boardFileService.init();
-        this.boardFileService.storeMuti(files,String.valueOf(modiBoardId));
+        this.boardFileService.storeMuti(files,boardId);
         return new ResponseEntity<String>("successfully uploaded  !" , HttpStatus.OK);
     }
 
