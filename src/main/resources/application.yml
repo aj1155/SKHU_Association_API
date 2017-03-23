@@ -14,7 +14,10 @@ spring:
 dashboard.url: http://127.0.0.1
 
 ---
+key.store : /usr/share/tomcat8/webapps/api-server/resources/apns_pro.p12
+key.password : 21248619
 
+---
 ### jwt Settings ###
 jwt.secret: a1g2y47dg3dj59fjhhsd7cnewy73j
 jwt.expiration: 604800
@@ -27,7 +30,7 @@ image.location : /usr/share/tomcat8/webapps/api-server/resources/image
 ---
 
 ## DataSource configuration
-spring.datasource.url: jdbc:mysql://35.162.28.119/association?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+spring.datasource.url: jdbc:mysql://127.0.0.1/association?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
 spring.datasource.username: skhu
 spring.datasource.password: 1234
 spring.datasource.driverClassName: com.mysql.jdbc.Driver
@@ -37,4 +40,3 @@ spring.datasource.driverClassName: com.mysql.jdbc.Driver
 spring.jpa.hibernate.ddl-auto: validate
 spring.jpa.hibernate.naming.strategy: org.hibernate.cfg.ImprovedNamingStrategy
 spring.jpa.show-sql: true
----

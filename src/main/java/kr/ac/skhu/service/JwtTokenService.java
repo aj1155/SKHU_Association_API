@@ -9,6 +9,7 @@ import kr.ac.skhu.domain.User;
 import kr.ac.skhu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -115,7 +116,8 @@ public class JwtTokenService {
 
     private User loginPassingDo(UserRequest userRequest){
         //TODO QueryDsl로 변경
-        User user = this.userRepository.findByLoginIdAndPasswordAndCategoryId(userRequest.getLogin_id(),userRequest.getPassword(),Integer.parseInt(userRequest.getCategoryId()));
+        String encodedPassword = new BCryptPasswordEncoder().encode(userRequest.getPassword());
+        User user = this.userRepository.findByLoginIdAndPasswordAndCategoryId(userRequest.getLogin_id(),encodedPassword,Integer.parseInt(userRequest.getCategoryId()));
         return (user==null)? null:user;
     }
 }

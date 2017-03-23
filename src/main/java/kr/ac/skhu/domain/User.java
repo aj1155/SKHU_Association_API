@@ -66,12 +66,20 @@ public class User extends BaseEntity implements Serializable {
                 .password(password)
                 .build();
     }
-    public static User ofUpdate(int id,String loginId,String name,String password){
+    public static User ofUpdate(int id,Position userType,String loginId,String name,String password,String email,String companyNumber,String phoneNumber,String status,int grade,String birth,int categoryId){
         return User.builder()
                 .id(id)
+                .position(userType)
                 .loginId(loginId)
                 .name(name)
                 .password(password)
+                .email(email)
+                .companyNumber(companyNumber)
+                .phoneNumber(phoneNumber)
+                .status(status)
+                .grade(grade)
+                .birth(birth)
+                .categoryId(categoryId)
                 .build();
     }
 

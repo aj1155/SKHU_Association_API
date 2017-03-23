@@ -85,7 +85,7 @@ public class UserController {
     /***** update *****/
 
     /* user 정보 업데이트 */
-    @RequestMapping(value = "/",method = RequestMethod.PUT)
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
     public AsctApiResponse<UserResponse> readSeniorManager(@Valid @RequestBody UserRequest userRequest){
         return this.userService.update(userRequest);
     }

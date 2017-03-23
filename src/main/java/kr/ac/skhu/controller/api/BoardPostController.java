@@ -81,6 +81,7 @@ public class BoardPostController {
         return new AsctApiResponse<>(list);
     }
 
+
     /***** update *****/
     @RequestMapping(value = "",method = RequestMethod.PUT)
     public AsctApiResponse update(@Valid @RequestBody BoardPostRequest boardPostRequest){
@@ -94,7 +95,7 @@ public class BoardPostController {
         String token = (String)request.getHeader("token");
         int userId = this.jwtTokenService.getUserIdFromToken(token);
         String userName = this.jwtTokenService.getUsernameFromToken(token);
-        BoardPost boardPost = BoardPost.ofUpdate(Integer.parseInt(boardPostId),title,content,Integer.parseInt(boardId),userId,userName);
+        BoardPost boardPost = BoardPost.ofUpdate(Integer.parseInt(boardId),title,content,Integer.parseInt(boardId),userId,userName);
         int modiBoardId = this.boardPostService.updateBoard(boardPost).getId();
         this.boardFileService.init();
         this.boardFileService.storeMuti(files,String.valueOf(modiBoardId));
