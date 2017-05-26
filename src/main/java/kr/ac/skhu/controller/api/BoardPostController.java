@@ -89,7 +89,7 @@ public class BoardPostController {
         return new AsctApiResponse<>(result);
     }
 
-    @PutMapping("/withFile")
+    @PostMapping("/update/withFile")
     public ResponseEntity<?> withFIleUpdate(@RequestParam("file") MultipartFile[] files,@RequestParam("content") String content,HttpServletRequest request
             ,@RequestParam("boardPostId") String boardPostId,@RequestParam("boardId") String boardId ,@RequestParam("title") String title,RedirectAttributes redirectAttributes) throws StorageException {
         String token = (String)request.getHeader("token");
